@@ -1,5 +1,4 @@
 const { app, BrowserWindow, Menu } = require("electron");
-const { join } = require("path");
 
 const isMac = process.platform === "darwin";
 
@@ -49,11 +48,9 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 500,
     height: 500,
-    webPreferences: {
-      preload: join(__dirname, "preload.js"),
-    },
+    webPreferences: {},
   });
-  win.loadFile("./index.html");
+  win.loadURL("http://localhost:5173"); // TODO: change to file:// in production
 };
 
 app.whenReady().then(() => {
