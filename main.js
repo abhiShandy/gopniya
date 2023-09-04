@@ -1,48 +1,6 @@
 const { app, BrowserWindow, Menu } = require("electron");
 
-const isMac = process.platform === "darwin";
-
-const template = [
-  // { role: 'appMenu' }
-  ...(isMac
-    ? [
-        {
-          label: app.name,
-          submenu: [
-            { role: "about" },
-            { type: "separator" },
-            { role: "services" },
-            { type: "separator" },
-            { role: "hide" },
-            { role: "hideOthers" },
-            { role: "unhide" },
-            { type: "separator" },
-            { role: "quit" },
-          ],
-        },
-      ]
-    : []),
-  // { role: 'fileMenu' }
-  {
-    label: "File",
-    submenu: [
-      {
-        label: "Open",
-        click: () => {
-          console.log("Open clicked");
-        },
-      },
-    ],
-  },
-  // { role: 'viewMenu' }
-  {
-    label: "View",
-    submenu: [{ role: "toggleDevTools" }],
-  },
-];
-
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
+Menu.setApplicationMenu(null);
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -50,7 +8,7 @@ const createWindow = () => {
     height: 500,
     webPreferences: {},
   });
-  win.loadURL("http://localhost:5173"); // TODO: change to file:// in production
+  win.loadURL("http://localhost:5173"); // TODO: change to file:// or loadFile in production
 };
 
 app.whenReady().then(() => {
