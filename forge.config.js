@@ -27,4 +27,15 @@ module.exports = {
       config: {},
     },
   ],
+  publishers: [
+    {
+      name: "@electron-forge/publisher-s3",
+      platforms: ["darwin"],
+      config: {
+        bucket: "gopniyainfra-bucket83908e77-1155t9lo33mkj",
+        folder: "test",
+        region: "us-east-1",
+      },
+    },
+  ],
 };
