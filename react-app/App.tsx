@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { v4 as uuid } from "uuid";
 
+type Transaction = {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+  balance: number;
+};
+
 const App = () => {
   const [credit, setCredit] = useState(0);
   const [debit, setDebit] = useState(0);
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const processTx = (transactions) => {
+  const processTx = (transactions: string[]) => {
     const transformedTx = transactions.map((transaction) => {
       const elements = transaction.split(",");
       if (elements.length < 4) {
@@ -64,8 +72,8 @@ const App = () => {
     });
 
     const transactionsToShow = transformedTx.filter(
-      (transaction) => transaction
-    );
+      (transaction) => transaction !== undefined
+    ) as Transaction[];
 
     setTransactions(transactionsToShow);
 
@@ -86,15 +94,21 @@ const App = () => {
     setCredit(credit);
   };
 
-  const onFileImport = (event) => {
-    const file = event.target.files[0];
+  const onFileImport: React.FormEventHandler<HTMLInputElement> = (event) => {
+    const file = event.currentTarget.files
+      ? event.currentTarget.files[0]
+      : null;
     const reader = new FileReader();
     reader.onload = (event) => {
-      const text = event.target.result;
+      const text = event.target ? event.target.result : "";
+      if (typeof text !== "string") {
+        return;
+      }
       const transactions = text.split("\n");
       processTx(transactions);
     };
-    reader.readAsText(file);
+
+    if (file) reader.readAsText(file);
   };
 
   return (
